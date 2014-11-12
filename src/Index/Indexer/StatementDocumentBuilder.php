@@ -31,7 +31,7 @@ class StatementDocumentBuilder {
 		return $document;
 	}
 
-	private function getDocumentId( Entity $entity, Statement $statement ) { 
+	private function getDocumentId( Entity $entity, Statement $statement ) {
 		$documentId = $entity->getId()->getSerialization();
 		$documentId .= '_' . $statement->getHash();
 
@@ -53,7 +53,8 @@ class StatementDocumentBuilder {
 			'entity_id' => $entity->getId()->getSerialization(),
 			'property_id' => $propertyId->getSerialization(),
 			'snak_type' => $snakType,
-			'data_type' => $this->propertyDataTypeLookup->getDataTypeIdForProperty( $propertyId )
+			'data_type' => $this->propertyDataTypeLookup->getDataTypeIdForProperty( $propertyId ),
+			'hash' => $statement->getHash()
 		);
 
 		if ( $snakType === 'value' ) {
