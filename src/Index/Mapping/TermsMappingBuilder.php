@@ -2,7 +2,7 @@
 
 namespace Wikibase\Elastic\Index\Mapping;
 
-class TermsMappingBuilder {
+class TermsMappingBuilder implements MappingBuilder {
 
 	/**
 	 * @var string[]

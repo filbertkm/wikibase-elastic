@@ -2,7 +2,7 @@
 
 namespace Wikibase\Elastic\Index\Mapping;
 
-class StatementMappingBuilder {
+class StatementMappingBuilder implements MappingBuilder {
 
 	public function build() {
 		$mapping = array();
@@ -29,6 +29,10 @@ class StatementMappingBuilder {
 				'index' => 'not_analyzed'
 			),
 			'snak_type' => array(
+				'type' => 'string',
+				'index' => 'not_analyzed'
+			),
+			'hash' => array(
 				'type' => 'string',
 				'index' => 'not_analyzed'
 			),
