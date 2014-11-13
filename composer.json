@@ -1,4 +1,6 @@
 {
+  "name": "wikibase/elastic",
+  "type": "library",
   "require": {
     "doctrine/dbal": "~2.4",
     "wikibase/internal-serialization": "~1.0"
