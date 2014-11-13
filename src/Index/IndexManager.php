@@ -5,7 +5,7 @@ namespace Wikibase\Elastic\Index;
 use Elastica\Index;
 use Elastica\Type\Mapping;
 use Wikibase\Elastic\Index\Indexer\Indexer;
-use Wikibase\Elastic\Index\Mapping\IndexMappingBuilder;
+use Wikibase\Elastic\Index\Mapping\EntityMappingBuilder;
 
 class IndexManager {
 
@@ -20,9 +20,9 @@ class IndexManager {
 	private $indexer;
 
 	/**
-	 * @var IndexMappingBuilder
+	 * @var EntityMappingBuilder
 	 */
-	private $indexMappingBuilder;
+	private $mappingBuilder;
 
 	/**
 	 * @param Index $index
@@ -37,14 +37,18 @@ class IndexManager {
 		$this->index = $index;
 		$this->indexer = $indexer;
 
-		$this->mappingBuilder = new IndexMappingBuilder( $languageCodes );
+		$this->mappingBuilder = new EntityMappingBuilder( $languageCodes );
 	}
 
 	public function build() {
 		// deletes and recreates if index exists
 		$this->index->create( $this->buildIndexConfig(), true );
 
-		$this->createMappings( $this->mappingBuilder->build() );
+		$mappingConfigs = $this->mappingBuilder->build();
+
+		foreach( $mappingConfigs as $mappingConfig ) {
+			$this->createMappings( $mappingConfig );
+		}
 
 		$this->indexer->doIndex();
 	}
