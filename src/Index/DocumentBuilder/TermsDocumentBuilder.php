@@ -1,6 +1,6 @@
 <?php
 
-namespace Wikibase\Elastic\Index\Indexer;
+namespace Wikibase\Elastic\Index\DocumentBuilder;
 
 use Elastica\Document;
 use Wikibase\DataModel\Entity\Entity;

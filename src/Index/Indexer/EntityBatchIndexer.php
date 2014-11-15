@@ -5,6 +5,8 @@ namespace Wikibase\Elastic\Index\Indexer;
 use Elastica\Document;
 use Elastica\Index;
 use Wikibase\DataModel\Entity\Entity;
+use Wikibase\Elastic\Index\DocumentBuilder\StatementDocumentBuilder;
+use Wikibase\Elastic\Index\DocumentBuilder\TermsDocumentBuilder;
 use Wikibase\Elastic\Logger;
 use Wikibase\Lib\Store\EntityLookup;
 
