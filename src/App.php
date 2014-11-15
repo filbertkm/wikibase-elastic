@@ -23,24 +23,7 @@ use Wikibase\Utils;
 
 class App {
 
-	private $internalDeserializer;
-
 	private $wikibaseRepo;
-
-	public function getInternalEntityDeserializer() {
-		if ( !isset( $this->internalDeserializer ) ) {
-			$dataValueMap = $this->getDataValueMap();
-
-			$deserializerFactory = new DeserializerFactory(
-				new DataValueDeserializer( $dataValueMap ),
-				new BasicEntityIdParser()
-			);
-
-			$this->internalDeserializer = $deserializerFactory->newEntityDeserializer();
-		}
-
-		return $this->internalDeserializer;
-	}
 
 	/**
 	 * @return Client
@@ -69,60 +52,6 @@ class App {
 				$this->getWikibaseRepo()->getStore()->newEntityPerPage()
 			),
 			$batchIndexer
-		);
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDataValueMap() {
-		return array(
-			'globecoordinate' => 'DataValues\GlobeCoordinateValue',
-			'monolingualtext' => 'DataValues\MonolingualTextValue',
-			'multilingualtext' => 'DataValues\MultilingualTextValue',
-			'quantity' => 'DataValues\QuantityValue',
-			'time' => 'DataValues\TimeValue',
-			'wikibase-entityid' => 'Wikibase\DataModel\Entity\EntityIdValue',
-			'string' => 'DataValues\StringValue'
-		);
-	}
-
-	/**
-	 * @return EntityDumpLookup
-	 */
-	public function getEntityDumpLookup() {
-		return new EntityDumpLookup(
-			$this->getDBALConnection(),
-			$this->getInternalEntityDeserializer()
-		);
-	}
-
-	/**
-	 * @return EntityDumpIndexer
-	 */
-	public function getEntityDumpIndexer( Index $index ) {
-		$conn = $this->getDBALConnection();
-
-		$batchIndexer = new EntityBatchIndexer(
-			$index,
-			$this->getEntityDumpLookup(),
-			new Logger(),
-			Utils::getLanguageCodes()
-		);
-
-		return new EntityIndexer(
-			new EntityIdDumpPager( $conn ),
-			$batchIndexer
-		);
-	}
-
-	/**
-	 * @return DBALConnection
-	 */
-	public function getDBALConnection() {
-		return \Doctrine\DBAL\DriverManager::getConnection(
-			$GLOBALS['wgWBDumpDbConfig'],
-			new \Doctrine\DBAL\Configuration()
 		);
 	}
 
