@@ -9,14 +9,21 @@ use Wikibase\DataModel\Statement\Statement;
 
 class StatementDocumentBuilder {
 
+	/**
+	 * @var PropertyDataTypeLookup
+	 */
 	private $propertyDataTypeLookup;
 
+	/**
+	 * @param PropertyDataTypeLookup $propertyDataTypeLookup
+	 */
 	public function __construct( PropertyDataTypeLookup $propertyDataTypeLookup ) {
 		$this->propertyDataTypeLookup = $propertyDataTypeLookup;
 	}
 
 	/**
 	 * @param Entity $entity
+	 * @param Statement $statement
 	 *
 	 * @return Document
 	 */
@@ -31,6 +38,12 @@ class StatementDocumentBuilder {
 		return $document;
 	}
 
+	/**
+	 * @param Entity $entity
+	 * @param Statement $statement
+	 *
+	 * @return string
+	 */
 	private function getDocumentId( Entity $entity, Statement $statement ) {
 		$documentId = $entity->getId()->getSerialization();
 		$documentId .= '_' . $statement->getHash();
