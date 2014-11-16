@@ -77,6 +77,16 @@ class StatementDocumentBuilder {
 				$data['value_string'] = $value->getValue();
 			} else if ( $value->getType() === 'wikibase-entityid' ) {
 				$data['value_string'] = $value->getEntityId()->getSerialization();
+			} else if ( $value->getType() === 'globecoordinate' ) {
+				$data['value_geo'] = array(
+					'lat' => $value->getLatitude(),
+					'lon' => $value->getLongitude()
+				);
+
+				$data['value_geo_attributes'] = array(
+					'globe' => $value->getGlobe(),
+					'precision' => $value->getPrecision()
+				);
 			}
 		}
 

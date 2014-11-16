@@ -39,7 +39,21 @@ class StatementMappingBuilder implements MappingBuilder {
 			'value_string' => array(
 				'type' => 'string',
 				'index' => 'not_analyzed'
-			)
+			),
+			'value_geo' => array(
+				'type' => 'geo_point'
+			),
+			'value_geo_attributes' => array(
+				'properties' => array(
+					'globe' => array(
+						'type' => 'string',
+						'index' => 'not_analyzed'
+					),
+					'precision' => array(
+						'type' => 'float'
+					)
+				)
+			),
 		);
 	}
 
