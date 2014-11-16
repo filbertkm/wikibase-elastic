@@ -7,6 +7,7 @@ use Elastica\Filter\Type;
 use Elastica\Index;
 use Elastica\Query;
 use Elastica\ResultSet;
+use Elastica\Search;
 use OutOfBoundsException;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\Lib\Store\TermLookup;
@@ -24,11 +25,22 @@ class ElasticTermLookup implements TermLookup {
 	 */
 	private $languageCodes;
 
+	/**
+	 * @var int
+	 */
+	private $limit = 200;
+
 	public function __construct( Index $index ) {
 		$this->index = $index;
 		$this->languageCodes = Utils::getLanguageCodes();
 	}
 
+	/**
+	 * @param EntityId $entityId
+	 * @param string $languageCode
+	 *
+	 * @return string
+	 */
 	public function getLabel( EntityId $entityId, $languageCode ) {
 		$results = $this->queryTerms( $entityId, array( $languageCode ) );
 
@@ -50,7 +62,7 @@ class ElasticTermLookup implements TermLookup {
 	}
 
 	private function getTerms( EntityId $entityId, $termType ) {
-		$chunks = array_chunk( $this->languageCodes, 12 );
+		$chunks = array_chunk( $this->languageCodes, $this->limit );
 
 		$terms = array();
 
@@ -66,14 +78,17 @@ class ElasticTermLookup implements TermLookup {
 		$query = new Query();
 		$query->setFilter( $this->getFilterForId( $entityId ) );
 
-		$search = new \Elastica\Search( $this->index->getClient() );
+		$search = new Search( $this->index->getClient() );
 
 		foreach( $languageCodes as $languageCode ) {
 			$search->addType( new \Elastica\Type( $this->index, 'terms_' . $languageCode ) );
 		}
 
+		$search->setOptions( array(
+			Search::OPTION_SIZE => $this->limit
+		) );
+
 		$search->setQuery( $query );
-		wfDebugLog( 'wikidata', $entityId->getSerialization() );
 
 		return $search->search();
 	}
