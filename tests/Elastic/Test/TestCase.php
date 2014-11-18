@@ -23,8 +23,8 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return Index
 	 */
-	protected function createIndex( $name ) {
-		$index = $this->getIndex();
+	protected function newIndex( $name ) {
+		$index = $this->getIndex( $name );
 		$index->create(
 			array(
 				'index' => array(
@@ -32,7 +32,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 					'number_of_replicas' => 0
 				)
 			),
-			false
+			true
 		);
 
         return $index;

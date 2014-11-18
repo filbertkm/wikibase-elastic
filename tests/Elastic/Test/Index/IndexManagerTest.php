@@ -1,10 +1,11 @@
 <?php
 
-namespace Wikibase\Elastic\Test;
+namespace Wikibase\Elastic\Test\Index;
 
 use Elastica\Document;
 use Elastica\Index;
 use Wikibase\Elastic\Index\IndexManager;
+use Wikibase\Elastic\Test\TestCase;
 
 class IndexManagerTest extends TestCase {
 
