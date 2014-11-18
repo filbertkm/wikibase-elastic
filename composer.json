@@ -9,5 +9,10 @@
     "psr-4" : {
       "Wikibase\\Elastic\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Wikibase\\Elastic\\Test\\": "tests/" }
+    }
   }
 }

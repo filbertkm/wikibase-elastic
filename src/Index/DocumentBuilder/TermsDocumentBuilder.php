@@ -10,7 +10,7 @@ class TermsDocumentBuilder {
 	/**
 	 * @var string
 	 */
-	private $langaugeCode;
+	private $languageCode;
 
 	/**
 	 * @param string $languageCode

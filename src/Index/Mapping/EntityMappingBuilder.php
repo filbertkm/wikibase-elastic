@@ -26,10 +26,8 @@ class EntityMappingBuilder implements MappingBuilder {
 	 * @return array
 	 */
 	public function build() {
-		return array(
-			$this->termsMappingBuilder->build(),
-			$this->statementMappingBuilder->build()
-		);
+		return $this->termsMappingBuilder->build()
+			 + $this->statementMappingBuilder->build();
 	}
 
 }

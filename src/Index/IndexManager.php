@@ -39,8 +39,8 @@ class IndexManager {
 		// deletes and recreates if index exists
 		$this->index->create( $this->buildIndexConfig(), true );
 
-		foreach( $this->mappingBuilder->build() as $mappingConfig ) {
-			$this->createMapping( $mappingConfig );
+		foreach( $this->mappingBuilder->build() as $typeName => $fields ) {
+			$this->createMappingForType( $typeName, $fields );
 		}
 
 		$this->indexer->doIndex();
@@ -57,15 +57,6 @@ class IndexManager {
 		);
 
 		return $config;
-	}
-
-	/**
-	 * @param array $mappingConfigs
-	 */
-	private function createMapping( array $mappingConfig ) {
-		foreach( $mappingConfig as $typeName => $fields ) {
-			$this->createMappingForType( $typeName, $fields );
-		}
 	}
 
 	/**
