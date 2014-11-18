@@ -5,7 +5,7 @@ namespace Wikibase\Elastic\Index;
 use Elastica\Index;
 use Elastica\Type\Mapping;
 use Wikibase\Elastic\Index\Indexer\Indexer;
-use Wikibase\Elastic\Index\Mapping\EntityMappingBuilder;
+use Wikibase\Elastic\Index\Mapping\MappingBuilder;
 
 class IndexManager {
 
@@ -20,34 +20,27 @@ class IndexManager {
 	private $indexer;
 
 	/**
-	 * @var EntityMappingBuilder
+	 * @var MappingBuilder
 	 */
 	private $mappingBuilder;
 
 	/**
 	 * @param Index $index
 	 * @param Indexer $indexer
-	 * @param string[] $languageCodes
+	 * @param MappingBuilder $mappingBuilder
 	 */
-	public function __construct(
-		Index $index,
-		Indexer $indexer,
-		array $languageCodes
-	) {
+	public function __construct( Index $index, Indexer $indexer, MappingBuilder $mappingBuilder ) {
 		$this->index = $index;
 		$this->indexer = $indexer;
-
-		$this->mappingBuilder = new EntityMappingBuilder( $languageCodes );
+		$this->mappingBuilder = $mappingBuilder;
 	}
 
 	public function build() {
 		// deletes and recreates if index exists
 		$this->index->create( $this->buildIndexConfig(), true );
 
-		$mappingConfigs = $this->mappingBuilder->build();
-
-		foreach( $mappingConfigs as $mappingConfig ) {
-			$this->createMappings( $mappingConfig );
+		foreach( $this->mappingBuilder->build() as $mappingConfig ) {
+			$this->createMapping( $mappingConfig );
 		}
 
 		$this->indexer->doIndex();
@@ -69,18 +62,17 @@ class IndexManager {
 	/**
 	 * @param array $mappingConfigs
 	 */
-	private function createMappings( array $mappingConfigs ) {
-		foreach( $mappingConfigs as $typeName => $fields ) {
-			$this->createMapping( $typeName, $fields );
+	private function createMapping( array $mappingConfig ) {
+		foreach( $mappingConfig as $typeName => $fields ) {
+			$this->createMappingForType( $typeName, $fields );
 		}
 	}
 
 	/**
-	 * @param Index $index
 	 * @param string $typeName
 	 * @param array $fields
 	 */
-	private function createMapping( $typeName, array $fields ) {
+	private function createMappingForType( $typeName, array $fields ) {
 		$elasticaType = $this->index->getType( $typeName );
 
 		$mapping = new Mapping();
