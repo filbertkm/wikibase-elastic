@@ -1,11 +1,21 @@
 {
   "name": "wikibase/elastic",
   "type": "library",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/filbertkm/wikibase-store.git"
+    }
+  ],
+  "require": {
+    "wikibase/store": "dev-master"
+  },
   "autoload": {
     "psr-4" : {
       "Wikibase\\Elastic\\": "src/"
     }
   },
+  "minimum-stability": "dev",
   "autoload-dev": {
     "psr-4": {
       "Wikibase\\Elastic\\Test\\": "tests/"
