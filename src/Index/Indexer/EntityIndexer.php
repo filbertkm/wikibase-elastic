@@ -2,7 +2,7 @@
 
 namespace Wikibase\Elastic\Index\Indexer;
 
-use Wikibase\Repo\Store\EntityIdPager;
+use Wikibase\Store\EntityIdPager;
 
 class EntityIndexer implements Indexer {
 

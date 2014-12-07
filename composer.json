@@ -8,6 +8,8 @@
     }
   ],
   "require": {
+    "ruflin/elastica": "1.3.0.0",
+    "wikibase/data-model": "~2.4",
     "wikibase/store": "dev-master"
   },
   "autoload": {

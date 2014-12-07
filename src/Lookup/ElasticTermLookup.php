@@ -10,8 +10,7 @@ use Elastica\ResultSet;
 use Elastica\Search;
 use OutOfBoundsException;
 use Wikibase\DataModel\Entity\EntityId;
-use Wikibase\Lib\Store\TermLookup;
-use Wikibase\Utils;
+use Wikibase\Store\TermLookup;
 
 class ElasticTermLookup implements TermLookup {
 
@@ -30,9 +29,9 @@ class ElasticTermLookup implements TermLookup {
 	 */
 	private $limit = 200;
 
-	public function __construct( Index $index ) {
+	public function __construct( Index $index, array $languageCodes ) {
 		$this->index = $index;
-		$this->languageCodes = Utils::getLanguageCodes();
+		$this->languageCodes = $languageCodes;
 	}
 
 	/**
